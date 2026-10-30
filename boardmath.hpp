@@ -38,6 +38,7 @@ namespace Ludo{
         string color;
         vector<Token> tokens;
         int startPosition;
+        public:
         player(string playerColor, int startPos){
             color = playerColor;
             startPosition = startPos;
