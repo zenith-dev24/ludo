@@ -28,4 +28,26 @@ class LudoGame{
             }
             return false;
         }
+       
+        void handleCapture(int targetabspos,string movingcolor){
+            if(isSafeSquare(targetabspos)){
+                return;
+            }
+            for(auto& player : players){
+                if(player.color == movingcolor){
+                    continue;
+                }
+                for(auto& token : player.tokens){
+                    if(token.state == Tokenstate::MAIN_PATH){
+                        int tokenabspos = getAbsolutePosition(player.startPosition,token.stepsTaken);
+                        if(tokenabspos == targetabspos){
+                            cout << ">>>" << player.color << " 's token was captured and sent back to BASE!" << endl;
+                            token.state = TokenState::BASE;
+                            token.stepsTaken = 0;
+                        }
+                    }
+                }
+            }
+        }
+        
 }
