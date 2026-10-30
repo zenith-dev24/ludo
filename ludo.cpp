@@ -87,5 +87,13 @@ class LudoGame{
             }
             cout << "--------------------------\n";
         }
-        
+        void playTurn(){}
+};
+int main(){
+    int numplayers;
+    while(numplayers < 2 || numplayers > 4){
+        cout << "Enter the number of players (2-4):";
+        cin >> numplayers;
+    }
+    return0;
 }
