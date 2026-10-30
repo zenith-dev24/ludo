@@ -33,5 +33,27 @@ namespace Ludo{
             return ss.str();
         }
     };
-}
+    
+    class player{
+        string color;
+        vector<Token> tokens;
+        int startPosition;
+        player(string playerColor, int startPos){
+            color = playerColor;
+            startPosition = startPos;
+            for(int i = 0;i < 4;i++){
+                tokens.push_back(Token(i));
+            }
+        }
+
+        bool hasWon() const{
+            for(const auto& t : tokens){
+                if(t.state != TokenState::FINISHED){
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+};
 #endif
