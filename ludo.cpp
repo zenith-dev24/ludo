@@ -68,5 +68,24 @@ class LudoGame{
             }
             return false;
         }
+        void printBoard(){
+            cout << "\n-- Current Board State --\n";
+            for(const auto& p : players){
+                cout << p.color << ": [";
+                for(const auto& t : p.tokens){
+                    if(t.state == TokenState::BASE){
+                        cout << "B";
+                    }
+                    else if(t.state == TokenState::FINISHED){
+                        cout << "F";
+                    }
+                    else{
+                        cout << t.stepsTaken << " ";
+                    }
+                }
+                cout << "]\n";
+            }
+            cout << "--------------------------\n";
+        }
         
 }
