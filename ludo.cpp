@@ -49,5 +49,24 @@ class LudoGame{
                 }
             }
         }
+    public:
+        LudoGame(int numPlayers){
+            currentplayerIndex = 0;
+            if(numPlayers >= 2){
+                players.push_back(player("RED",0));
+                players.push_back(player("YELLOW",26));
+                players.push_back(player("GREEN",13));
+                players.push_back(player("BLUE",39));
+            }
+        }
+        bool isGameOver(){
+            for(const auto& p : players){
+                if(p.hasWon()){
+                    cout << "\n*** " << p.color << "WINS THE GAME! ***\n";
+                    return true;
+                }
+            }
+            return false;
+        }
         
 }
