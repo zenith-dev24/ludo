@@ -91,16 +91,52 @@ class LudoGame{
             player& current = players[currentplayerindex];
             cout << "\n" << current.color << "'s Turn <<<\n";
             int dice = rollDice();
-            cout << "Rolled a" << dice << endl;
+            cout << "Rolled a" << dice << '\n';
             bool tokenMoved = false;
             for(auto& t : current.tokens){
                 if(t.state == TokenState::BASE && dice == 6){
-                    cout << "Unlocking Token" << t.id << "from base" << endl;
+                    cout << "Unlocking Token" << t.id << "from base" << '\n';
                     t.state = TokenState::MAIN_PATH;
                     t.stepsTaken = 0;
                     tokenMoved = true;
                     break;
                 }
+                else if(t.state == TokenState::MAIN_PATH){
+                    int abspos = getAbsolutePosition(current.startPosition,t.stepsTaken);
+                    cout << "Moved Token" << t.id << "on main path to absolute square" << abspos << '\n';
+                    handleCapture(abspos,current.color);
+                    if(t.stepsTaken + dice > 50){
+                        t.state = TokenState::FINISHED;
+                    }
+                    t.stepsTaken += dice;
+                    else{
+                        cout << "Moved Token" << t.id << "into the home path" << '\n';
+                    }
+                    tokenMoved = true;
+                    break;
+                }
+                else if(t.state == TokenState::HOME_PATH){
+                    if(t.stepsTaken + dice <= 57){
+                        t.stepsTaken += dice;
+                        t.state = TokenState::FINISHED;
+                        cout << "Token" << t.id << "REACHED THE CENTER!" << '\n';
+                        else{
+                            cout << "Moved Token" << t.id << "closer to center" << (57 - t.stepsTaken) << "steps left" << '\n';
+                        }
+                        tokenMoved = true;
+                        break;
+                    }
+                }
+            }
+            if(!tokenMoved){
+                cout << "No valid moves available!" << '\n';
+            }
+
+            if(dice != 6){
+                currentplayerIndex = (currentplayerIndex + 1) % players.size();
+            }
+            else{
+                cout << "Rolled a 6! You got another turn!" << '\n';
             }
         }
 };
@@ -110,5 +146,9 @@ int main(){
         cout << "Enter the number of players (2-4):";
         cin >> numplayers;
     }
+    LudoGame game(numplayers);
+    char input;
+
+    cout << "Game started! Type 'r' and press Enter to roll the dice, or 'q' to quit." << '\n';
     return0;
 }
