@@ -17,7 +17,7 @@ int main(){
      }
      while(!WindowShouldClose()){
         BeginDrawing();
-            ClearBackground(Raywhite);
+            ClearBackground(RAYWHITE);
             if(boardTexture.id != 0){
                Rectangle sourceRec = { 0.0f,0.0f,(float)boardTexture.width,(float)boardTexture.height};
                Rectangle destRec = {0.0f,0.0f(float)screenWidth,(float)screenHeight};
