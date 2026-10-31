@@ -5,6 +5,7 @@
 #include "boardmath.hpp"
 
 using namespace std;
+using namespace Ludo;
 
 class LudoGame{
     private:
@@ -126,27 +127,33 @@ class LudoGame{
                     break;
                 }
                 else if(t.state == TokenState::HOME_PATH){
-                    if(t.stepsTaken + dice <= 57){
+                    if(t.stepsTaken + dice == 57){
                         t.stepsTaken += dice;
                         t.state = TokenState::FINISHED;
                         cout << "Token" << t.id << "REACHED THE CENTER!" << '\n';
-                    }
-                        else{
-                            cout << "Moved Token" << t.id << "closer to center" << (57 - t.stepsTaken) << "steps left" << '\n';
-                        }
                         tokenMoved = true;
                         break;
                     }
+                    else if(t.stepsTaken + dice < 57){
+                            t.stepsTaken += dice;
+                            cout << "Moved Token" << t.id << "closer to center" << (57 - t.stepsTaken) << "steps left" << '\n';
+                            tokenMoved = true;
+                            break;
+                    }
+                    else{
+                            continue;           
+                    }
                 }
-                if(!tokenMoved){
-                    cout << "No valid moves available!" << '\n';
-                }
-                if(dice != 6){
-                    currentplayerIndex = (currentplayerIndex + 1) % players.size();
-                }
-                else{
-                    cout << "Rolled a 6! You got another turn!" << '\n';
-                }
+            }
+            if(!tokenMoved){
+                cout << "No valid moves available!" << '\n';
+            }
+            if(dice != 6){
+                currentplayerIndex = (currentplayerIndex + 1) % players.size();
+            }
+            else{
+                cout << "Rolled a 6! You got another turn!" << '\n';
+            }
         }
 };
 int main(){
