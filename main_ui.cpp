@@ -20,7 +20,7 @@ int main(){
             ClearBackground(RAYWHITE);
             if(boardTexture.id != 0){
                Rectangle sourceRec = { 0.0f,0.0f,(float)boardTexture.width,(float)boardTexture.height};
-               Rectangle destRec = {0.0f,0.0f(float)screenWidth,(float)screenHeight};
+               Rectangle destRec = {0.0f,0.0f,(float)screenWidth,(float)screenHeight};
                vector2 origin = {0.0f,0.0f};
                DrawTexturePro(boardTexture,sourceRec,destRec,origin,0.0f,WHITE);
             }
