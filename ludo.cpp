@@ -87,7 +87,22 @@ class LudoGame{
             }
             cout << "--------------------------\n";
         }
-        void playTurn(){}
+        void playTurn(){
+            player& current = players[currentplayerindex];
+            cout << "\n" << current.color << "'s Turn <<<\n";
+            int dice = rollDice();
+            cout << "Rolled a" << dice << endl;
+            bool tokenMoved = false;
+            for(auto& t : current.tokens){
+                if(t.state == TokenState::BASE && dice == 6){
+                    cout << "Unlocking Token" << t.id << "from base" << endl;
+                    t.state = TokenState::MAIN_PATH;
+                    t.stepsTaken = 0;
+                    tokenMoved = true;
+                    break;
+                }
+            }
+        }
 };
 int main(){
     int numplayers;
