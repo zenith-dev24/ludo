@@ -33,4 +33,4 @@ int main(){
      UnloadTexture(boardTexture);
      CloseWindow();
      return 0;
-}k
+}
