@@ -150,5 +150,20 @@ int main(){
     char input;
 
     cout << "Game started! Type 'r' and press Enter to roll the dice, or 'q' to quit." << '\n';
+    while(!game.isGameOver()){
+        game.printBoard();
+        cout << ">";
+        cin >> input;
+        if(input == 'q'){
+            cout << "Quitting the game." << '\n';
+            break;
+        }
+        else if(input == 'r'){
+            game.playTurn();
+        }
+        else{
+            cout << "Invalid input!" << '\n';
+        }
+    }
     return0;
 }
