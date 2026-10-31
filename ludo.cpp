@@ -120,6 +120,7 @@ class LudoGame{
                         t.stepsTaken += dice;
                         t.state = TokenState::FINISHED;
                         cout << "Token" << t.id << "REACHED THE CENTER!" << '\n';
+                    }
                         else{
                             cout << "Moved Token" << t.id << "closer to center" << (57 - t.stepsTaken) << "steps left" << '\n';
                         }
@@ -138,7 +139,6 @@ class LudoGame{
             else{
                 cout << "Rolled a 6! You got another turn!" << '\n';
             }
-        }
 };
 int main(){
     int numplayers;
@@ -165,5 +165,5 @@ int main(){
             cout << "Invalid input!" << '\n';
         }
     }
-    return0;
+    return 0;
 }

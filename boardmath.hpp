@@ -55,6 +55,6 @@ namespace Ludo{
             }
             return true;
         }
-    }
+    };
 };
 #endif
