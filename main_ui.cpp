@@ -94,23 +94,82 @@ int main(){
 
      Texture2D boardTexture = LoadTexture("board.png");
 
-     if(boardTexture.id == 0){
-        cout << "ERROR: Failed to load board.png.Make sure the file exists." << "\n";
-     }
-     while(!WindowShouldClose()){
-        BeginDrawing();
-            ClearBackground(RAYWHITE);
-            if(boardTexture.id != 0){
-               Rectangle sourceRec = { 0.0f,0.0f,(float)boardTexture.width,(float)boardTexture.height};
-               Rectangle destRec = {0.0f,0.0f,(float)screenWidth,(float)screenHeight};
-               Vector2 origin = {0.0f,0.0f};
-               DrawTexturePro(boardTexture,sourceRec,destRec,origin,0.0f,WHITE);
+     LudoGame game(4);
+
+      while(!WindowShouldClose()){
+         if(!game.gameOver){
+            if(IsKeyPressed(KEY_SPACE)){
+               if(game.needsToRoll){
+                  game.rollDice();
+               }
+               else{
+                  game.executeTurn();
+               }
             }
-            else{
-               DrawRectangle(100,100,600,600,LIGHTGRAY);
-               DrawText("Missing board.png!",300,400,20,RED);
+         }
+         BeginDrawing();
+         ClearBackground(RAYWHITE);
+         if(boardTexture.id != 0){
+            DrawTexturePro(boardTexture,sourceRec,destRec,origin,0.0f,WHITE);
+         }
+         for(const auto& player : game.players){
+            Color pColor = getRatlibColor(player.color);
+
+            for(const auto& t : player.tokens){
+               float drawX = 0,drawY = 0;
+               if(t.state == TokenState::BASE){
+                  if(player.color == "RED"){
+                     drawX = redBase[t.id].x;drawY = redBase[t.id].y;
+                  }
+                  else if(player.color == "GREEN"){
+                     drawX = greenBase[t.id].x;drawY = greenBase[t.id].y;
+                  }
+                  else if(player.color == "YELLOW"){
+                     drawX = yellowBase[t.id].x;drawY = yellowBase[t.id].y;
+                  }
+                  else if(player.color == "BLUE"){
+                     drawX = blueBase[t.id].x;drawY = blueBase[t.id].y;
+                  }
+               }
+               else if(t.state == TokenState::MAIN_PATH){
+                  int absPos = game.getAbsolutePosition(player.startPosition,t.stepsTaken);
+                  drawX = mainPath[absPos].x;
+                  drawY = mainPath[absPos].y;
+               }
+               else if{t.state == TokenState::HOME_PATH}{
+                  int homeIdx = t.stepsTaken - 52;
+                  if(homeIdx >= 0 && homeIdx < 5){
+                     if(player.color == "RED"){
+                     drawX = redBase[homeIdx].x;drawY = redBase[homeIdx].y;
+                     }
+                     else if(player.color == "GREEN"){
+                        drawX = greenBase[homeIdx].x;drawY = greenBase[homeIdx].y;
+                     }
+                     else if(player.color == "YELLOW"){
+                        drawX = yellowBase[homeIdx].x;drawY = yellowBase[homeIdx].y;
+                     }
+                     else if(player.color == "BLUE"){
+                        drawX = blueBase[homeIdx].x;drawY = blueBase[homeIdx].y;
+                     }
+                  }
+               }
+               else if(t.state == TokenState::FINISHED){
+                  drawX = 400;
+                  drawY = 400;
+               }
+               if(drawX != 0 && drawY != 0){
+                  DrawCircle(drawX,drawY,15,pColor);
+                  DrawCircleLines(drawX,drawY,15,BLACK);
+               }
             }
-            EndDrawing();
+         }
+         DrawRectangle(10,10,250,80,Fade(BLACK,0.7f));
+         DrawText(TextFormat("Turn: %s",game.players[game.currentPlayerIndex].color.c_str()),20,20,20,getRaylibColor(game.players[game.currentPlayerIndex].color));
+         if(game.needsToRoll){
+            DrawRectangle(0,350,800,100,Fade(BLACK,0.8f));
+            DrawText("GAME OVER!",280,380,40,GREEN);
+         }
+         EndDrawing();
      }
      UnloadTexture(boardTexture);
      CloseWindow();
