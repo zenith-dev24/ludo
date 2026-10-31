@@ -28,9 +28,11 @@ int main(){
                DrawRectangle(100,100,600,600,LIGHTGRAY);
                DrawText("Missing board.png!",300,400,20,RED);
             }
+            else{
             EndDrawing();
+            }
      }
      UnloadTexture(boardTexture);
      CloseWindow();
      return 0;
-}
+}k
