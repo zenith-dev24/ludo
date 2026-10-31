@@ -20,13 +20,19 @@ class LudoGame{
             return (startPostion + stepsTaken) % 52;
         }
         bool isSafeSquare(int abspos){
-            int safeSquares[] = {0,8,13,21,26,34,39,47};
-            for(int s : safeSquares){
-                if(abspos == s){
-                    return true;
-                }
+            switch(abspos){
+                case 0:
+                case 8:
+                case 13:
+                case 21:
+                case 26:
+                case 34:
+                case 39:
+                case 47:
+                    return true:
+                default:
+                    return false:
             }
-            return false;
         }
        
         void handleCapture(int targetabspos,string movingcolor){
@@ -38,7 +44,7 @@ class LudoGame{
                     continue;
                 }
                 for(auto& token : player.tokens){
-                    if(token.state == Tokenstate::MAIN_PATH){
+                    if(token.state == TokenState::MAIN_PATH){
                         int tokenabspos = getAbsolutePosition(player.startPosition,token.stepsTaken);
                         if(tokenabspos == targetabspos){
                             cout << ">>>" << player.color << " 's token was captured and sent back to BASE!" << endl;
@@ -55,7 +61,11 @@ class LudoGame{
             if(numPlayers >= 2){
                 players.push_back(player("RED",0));
                 players.push_back(player("YELLOW",26));
+            }
+            if(numPlayers >= 3){
                 players.push_back(player("GREEN",13));
+            }
+            if(numPlayers == 4){
                 players.push_back(player("BLUE",39));
             }
         }
@@ -88,7 +98,7 @@ class LudoGame{
             cout << "--------------------------\n";
         }
         void playTurn(){
-            player& current = players[currentplayerindex];
+            Ludo::player& current = players[currentplayerindex];
             cout << "\n" << current.color << "'s Turn <<<\n";
             int dice = rollDice();
             cout << "Rolled a" << dice << '\n';
@@ -103,14 +113,14 @@ class LudoGame{
                 }
                 else if(t.state == TokenState::MAIN_PATH){
                     int abspos = getAbsolutePosition(current.startPosition,t.stepsTaken);
-                    cout << "Moved Token" << t.id << "on main path to absolute square" << abspos << '\n';
-                    handleCapture(abspos,current.color);
+                    t.stepsTaken += dice;
                     if(t.stepsTaken + dice > 50){
                         t.state = TokenState::FINISHED;
-                    }
-                    t.stepsTaken += dice;
-                    else{
                         cout << "Moved Token" << t.id << "into the home path" << '\n';
+                    }
+                    else{
+                        cout << "Moved Token" << t.id << "on main path to absolute square" << abspos << '\n';
+                        handleCapture(abspos,current.color);
                     }
                     tokenMoved = true;
                     break;
@@ -128,7 +138,7 @@ class LudoGame{
                         break;
                     }
                 }
-                else if(!tokenMoved){
+                if(!tokenMoved){
                     cout << "No valid moves available!" << '\n';
                 }
                 else if(dice != 6){
@@ -140,7 +150,7 @@ class LudoGame{
         }
 };
 int main(){
-    int numplayers;
+    int numplayers = 0;
     while(numplayers < 2 || numplayers > 4){
         cout << "Enter the number of players (2-4):";
         cin >> numplayers;
