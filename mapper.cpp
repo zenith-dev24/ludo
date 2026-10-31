@@ -18,7 +18,7 @@ int main(){
             if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
                 Vector2 mousePos = GetMousePosition();
                 clickedPoints.push_back(mousePos);
-                cout << "{" << mousePos.x << "f," << mousePos.y << "f}," << (clikedPoints.size() - 1) << '\n';
+                cout << "{" << mousePos.x << "f," << mousePos.y << "f}," << (clickedPoints.size() - 1) << '\n';
             }
             BeginDrawing();
             ClearBackground(RAYWHITE);
@@ -32,7 +32,7 @@ int main(){
             EndDrawing();
         }
         cout << "};\n";
-        unloadTexture(boardTexture);
-        closeWindow();
+        UnloadTexture(boardTexture);
+        CloseWindow();
         return 0;
 } 
