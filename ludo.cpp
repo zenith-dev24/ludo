@@ -128,17 +128,16 @@ class LudoGame{
                         break;
                     }
                 }
-            }
-            if(!tokenMoved){
-                cout << "No valid moves available!" << '\n';
-            }
-
-            if(dice != 6){
-                currentplayerIndex = (currentplayerIndex + 1) % players.size();
-            }
-            else{
-                cout << "Rolled a 6! You got another turn!" << '\n';
-            }
+                else if(!tokenMoved){
+                    cout << "No valid moves available!" << '\n';
+                }
+                else if(dice != 6){
+                    currentplayerIndex = (currentplayerIndex + 1) % players.size();
+                }
+                else{
+                    cout << "Rolled a 6! You got another turn!" << '\n';
+                }
+        }
 };
 int main(){
     int numplayers;

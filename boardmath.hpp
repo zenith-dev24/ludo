@@ -36,20 +36,20 @@ namespace Ludo{
     
     class player{
         string color;
-        vector<Token> tokens;
+        vector<Ludo::Token> tokens;
         int startPosition;
         public:
         player(string playerColor, int startPos){
             color = playerColor;
             startPosition = startPos;
             for(int i = 0;i < 4;i++){
-                tokens.push_back(Token(i));
+                tokens.push_back(Ludo::Token(i));
             }
         }
 
         bool hasWon() const{
             for(const auto& t : tokens){
-                if(t.state != TokenState::FINISHED){
+                if(t.state != Ludo::TokenState::FINISHED){
                     return false;
                 }
             }
