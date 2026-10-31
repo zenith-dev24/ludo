@@ -98,7 +98,7 @@ class LudoGame{
             }
             cout << "--------------------------\n";
         }
-        void playTurn(){
+void LudoGame :: playTurn(){
             Ludo::player& current = players[currentplayerIndex];
             cout << "\n" << current.color << "'s Turn <<<\n";
             int dice = rollDice();
