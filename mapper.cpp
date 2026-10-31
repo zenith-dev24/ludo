@@ -14,5 +14,13 @@ int main(){
         vector <Vector2> clickedPoints;
         cout << "Vector2 mainPath[52] = {\n";
         
-        
+        while(!WindowShouldClose()){
+            if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+                Vector2 mousePos = GetMousePosition();
+                clickedPoints.push_back(mousePos);
+                cout << "{" << mousePos.x << "f," << mousePos.y << "f}," << (clikedPoints.size() - 1) << '\n';
+            }
+            BeginDrawing();
+            ClearBackground(RAYWHITE);
+        }
 } 
