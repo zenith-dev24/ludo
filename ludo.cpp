@@ -29,9 +29,9 @@ class LudoGame{
                 case 34:
                 case 39:
                 case 47:
-                    return true:
+                    return true;
                 default:
-                    return false:
+                    return false;
             }
         }
        
@@ -59,14 +59,14 @@ class LudoGame{
         LudoGame(int numPlayers){
             currentplayerIndex = 0;
             if(numPlayers >= 2){
-                players.push_back(player("RED",0));
-                players.push_back(player("YELLOW",26));
+                players.push_back(Ludo::player("RED",0));
+                players.push_back(Ludo::player("YELLOW",26));
             }
             if(numPlayers >= 3){
-                players.push_back(player("GREEN",13));
+                players.push_back(Ludo::player("GREEN",13));
             }
             if(numPlayers == 4){
-                players.push_back(player("BLUE",39));
+                players.push_back(Ludo::player("BLUE",39));
             }
         }
         bool isGameOver(){
@@ -98,7 +98,7 @@ class LudoGame{
             cout << "--------------------------\n";
         }
         void playTurn(){
-            Ludo::player& current = players[currentplayerindex];
+            Ludo::player& current = players[currentplayerIndex];
             cout << "\n" << current.color << "'s Turn <<<\n";
             int dice = rollDice();
             cout << "Rolled a" << dice << '\n';
@@ -112,10 +112,10 @@ class LudoGame{
                     break;
                 }
                 else if(t.state == TokenState::MAIN_PATH){
-                    int abspos = getAbsolutePosition(current.startPosition,t.stepsTaken);
                     t.stepsTaken += dice;
-                    if(t.stepsTaken + dice > 50){
-                        t.state = TokenState::FINISHED;
+                    int abspos = getAbsolutePosition(current.startPosition,t.stepsTaken);
+                    if(t.stepsTaken > 50){
+                        t.state = TokenState::HOME_PATH;
                         cout << "Moved Token" << t.id << "into the home path" << '\n';
                     }
                     else{
@@ -141,7 +141,7 @@ class LudoGame{
                 if(!tokenMoved){
                     cout << "No valid moves available!" << '\n';
                 }
-                else if(dice != 6){
+                if(dice != 6){
                     currentplayerIndex = (currentplayerIndex + 1) % players.size();
                 }
                 else{
