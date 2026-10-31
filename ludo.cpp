@@ -8,7 +8,7 @@ using namespace std;
 
 class LudoGame{
     private:
-        vector<player> players;
+        vector<Ludo::player> players;
         int currentplayerIndex;
         int rollDice(){
             static random_device rd;
