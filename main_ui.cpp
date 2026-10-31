@@ -11,4 +11,13 @@ int main(){
      SetTargetFPS(60);
 
      Texture2D boardTexture = LoadTexture("board.png");
+
+     if(boardTexture.id == 0){
+        cout << "ERROR: Failed to load board.png.Make sure the file exists." << "\n";
+     }
+     while(!WindowShouldClose()){
+        BeginDrawing();
+            ClearBackground(Raywhite);
+            
+     }
 }
