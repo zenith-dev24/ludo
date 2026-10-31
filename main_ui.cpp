@@ -9,4 +9,6 @@ int main(){
 
      InitWindow(screenWidth,screenHeight,"Ludo Game");
      SetTargetFPS(60);
+
+     Texture2D boardTexture = LoadTexture("board.png");
 }
