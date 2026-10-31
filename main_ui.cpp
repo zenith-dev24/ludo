@@ -5,7 +5,7 @@ using namespace std;
 
 int main(){
      const int screenWidth = 800;
-     const int screeHeight = 800;
+     const int screenHeight = 800;
 
      InitWindow(screenWidth,screenHeight,"Ludo Game");
      SetTargetFPS(60);
