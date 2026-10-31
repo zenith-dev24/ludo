@@ -22,5 +22,17 @@ int main(){
             }
             BeginDrawing();
             ClearBackground(RAYWHITE);
+            Rectangle sourceRec = {0.0f,0.0f,(float)boardTexture.width,(float)boardTexture.height};
+            Rectangle destRec = {0.0f,0.0f,(float)screenWidth,(float)screenHeight};
+            DrawTexturePro(boardTexture,sourceRec,destRec,{0,0},0.0f,WHITE);
+            for(size_t i = 0;i < clickedPoints.size();i++){
+                DrawCircle(clickedPoints[i].x,clickedPoints[i].y,10,RED);
+                DrawText(TextFormat("%d",i),clickedPoints[i].x - 5,clickedPoints[i].y - 5,10,BLACK);
+            }
+            EndDrawing();
         }
+        cout << "};\n";
+        unloadTexture(boardTexture);
+        closeWindow();
+        return 0;
 } 
