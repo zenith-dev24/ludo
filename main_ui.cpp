@@ -109,7 +109,7 @@ Vector2 getTokenDrawPosition(LudoGame& game,int pIdx,int tIdx){
       return mainPath[absPos];
    }
    else if(t.state == TokenState::HOME_PATH){
-      int homeIdx = t.stepsTaken - 52;
+      int homeIdx = t.stepsTaken - 51;
       if(homeIdx>= 0 && homeIdx < 5){
          if(player.color == "RED"){
             return redHome[homeIdx];
@@ -123,6 +123,9 @@ Vector2 getTokenDrawPosition(LudoGame& game,int pIdx,int tIdx){
          if(player.color == "BLUE"){
             return blueHome[homeIdx];
          }
+      }
+      else if(t.state == TokenState::FINISHED){
+         return{400.0f,400.0f};
       }
    }
    return {0.0f,0.0f};
