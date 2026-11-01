@@ -1,5 +1,6 @@
 #include <raylib.h>
 #include <iostream>
+#include "ludo.hpp"
 
 using namespace std;
 using namespace Ludo;
@@ -110,10 +111,13 @@ int main(){
          BeginDrawing();
          ClearBackground(RAYWHITE);
          if(boardTexture.id != 0){
+            Rectangle sourceRec = {0.0f,0.0f,(float)boardTexture.width,(float)boardTexture.height};
+            Rectangle destRec = {0.0f,0.0f,(float)screenWidth,(float)screenHeight};
+            Vector2 origin = {0.0f,0.0f};
             DrawTexturePro(boardTexture,sourceRec,destRec,origin,0.0f,WHITE);
          }
          for(const auto& player : game.players){
-            Color pColor = getRatlibColor(player.color);
+            Color pColor = getRaylibColor(player.color);
 
             for(const auto& t : player.tokens){
                float drawX = 0,drawY = 0;
@@ -136,20 +140,20 @@ int main(){
                   drawX = mainPath[absPos].x;
                   drawY = mainPath[absPos].y;
                }
-               else if{t.state == TokenState::HOME_PATH}{
+               else if(t.state == TokenState::HOME_PATH){
                   int homeIdx = t.stepsTaken - 52;
                   if(homeIdx >= 0 && homeIdx < 5){
                      if(player.color == "RED"){
-                     drawX = redBase[homeIdx].x;drawY = redBase[homeIdx].y;
+                     drawX = redHome[homeIdx].x;drawY = redHome[homeIdx].y;
                      }
                      else if(player.color == "GREEN"){
-                        drawX = greenBase[homeIdx].x;drawY = greenBase[homeIdx].y;
+                        drawX = greenHome[homeIdx].x;drawY = greenHome[homeIdx].y;
                      }
                      else if(player.color == "YELLOW"){
-                        drawX = yellowBase[homeIdx].x;drawY = yellowBase[homeIdx].y;
+                        drawX = yellowHome[homeIdx].x;drawY = yellowHome[homeIdx].y;
                      }
                      else if(player.color == "BLUE"){
-                        drawX = blueBase[homeIdx].x;drawY = blueBase[homeIdx].y;
+                        drawX = blueHome[homeIdx].x;drawY = blueHome[homeIdx].y;
                      }
                   }
                }
