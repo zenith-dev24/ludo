@@ -66,8 +66,8 @@ Vector2 blueHome[5] = {{0.0f,0.0f}};
 
 Vector2 greenBase[4] = {{150,150},{200,150},{150,200},{200,200}};
 Vector2 redBase[4] = {{600,150},{650,150},{600,200},{650,200}};
-Vector2 blueBase[4] = {{600,600},{650,600},{600,650},{650,650}};
-Vector2 yellowBase[4] = {{150,600},{200,600},{150,650},{200,650}};
+Vector2 yellowBase[4] = {{600,600},{650,600},{600,650},{650,650}};
+Vector2 blueBase[4] = {{150,600},{200,600},{150,650},{200,650}};
 
 Color getRaylibColor(string colorName){
    if(colorName == "RED"){
