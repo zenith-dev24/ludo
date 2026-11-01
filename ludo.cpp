@@ -11,7 +11,7 @@ using namespace Ludo;
 LudoGame :: LudoGame(int numPlayers){
     currentplayerIndex = 0;
     currentRoll = 0;
-    needstoRoll = true;
+    needsToRoll = true;
     gameOver = false;
     if(numPlayers >= 2){
         players.push_back(Ludo::player("RED",0));
@@ -35,7 +35,7 @@ int LudoGame :: getAbsolutePosition(int startPostion,int stepsTaken){
             return (startPostion + stepsTaken) % 52;
         }
 bool LudoGame :: isSafeSquare(int abspos){
-    for(int safe : safe_Tiles){
+    for(int safe : Safe_Tiles){
         if(abspos == safe){
             return true;
         }
@@ -72,7 +72,7 @@ bool LudoGame :: isGameOver(){
 }
 bool LudoGame :: tryMoveToken(int tokenId){
     Ludo::player& current = players[currentplayerIndex];
-    Ludo::Token& t = current.tokens[tokenid];
+    Ludo::Token& t = current.tokens[tokenId];
     bool moveSuccesful = false;
     if(t.state == TokenState :: BASE){
         if(currentRoll == 6){
@@ -83,7 +83,7 @@ bool LudoGame :: tryMoveToken(int tokenId){
     }
     else if(t.state == TokenState::MAIN_PATH){
         if(t.stepsTaken + currentRoll > 50){
-            t.state == TokenState::HOME_PATH;
+            t.state = TokenState::HOME_PATH;
         }
         t.stepsTaken += currentRoll;
         if(t.state == TokenState::MAIN_PATH){
@@ -113,4 +113,11 @@ bool LudoGame :: tryMoveToken(int tokenId){
         return true;
     }
     return false;
+}
+void LudoGame :: executeTurn(){
+    for(int i = 0;i < 4;i++){
+        if(tryMoveToken(i)){
+            break;
+        }
+    }
 }
