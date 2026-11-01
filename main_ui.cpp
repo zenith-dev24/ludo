@@ -86,6 +86,33 @@ Color getRaylibColor(string colorName){
       return BLACK;
    }
 }
+Vector2 getTokenDrawPosition(LudoGame& game,int playerIdx,int tokenIdx){
+   const Ludo::player& player = game.players[playerIdx];
+   const Ludo::Token& t = player.tokens[tokenIdx];
+
+   if(t.state == TokenState::BASE){
+      if(player.color == "RED"){
+         return redBase[t.id];
+      }
+      if(player.color == "GREEN"){
+         return greenBase[t.id];
+      }
+      if(player.color == "YELLOW"){
+         return yellowBase[t.id];
+      }
+      if(player.color == "BLUE"){
+         return blueBase[t.id];
+      }
+   }
+   else if(t.state == TokenState::MAIN_PATH){
+      int abdPos = game.getAbsolutePostion(player.startPosition,t.stepsTaken);
+      return mainPath[absPos];
+   }
+   else if(t.state == TokenState::HOME_PATH){
+      int homeIdx = t.stepsTaken - 52;
+      
+   }
+}
 int main(){
      const int screenWidth = 800;
      const int screenHeight = 800;
