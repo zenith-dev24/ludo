@@ -110,8 +110,22 @@ Vector2 getTokenDrawPosition(LudoGame& game,int playerIdx,int tokenIdx){
    }
    else if(t.state == TokenState::HOME_PATH){
       int homeIdx = t.stepsTaken - 52;
-      
+      if(homeIdx>= 0 && homeIdx < 5){
+         if(player.color == "RED"){
+            return redHome[homeIdx];
+         }
+         if(player.color == "GREEN"){
+            return greenHome[homeIdx];
+         }
+         if(player.color == "YELLOW"){
+            return yellowHome[homeIdx];
+         }
+         if(player.color == "BLUE"){
+            return blueHome[homeIdx];
+         }
+      }
    }
+   return {400.0f,400.0f};
 }
 int main(){
      const int screenWidth = 800;
