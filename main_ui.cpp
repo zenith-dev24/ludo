@@ -176,7 +176,6 @@ int main(){
          else if(game.needsToRoll){
             DrawText("Press SPACE to Roll",280,380,20,BLACK);
          }
-         }
          EndDrawing();
      }
      UnloadTexture(boardTexture);
