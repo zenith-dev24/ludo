@@ -105,7 +105,7 @@ Vector2 getTokenDrawPosition(LudoGame& game,int pIdx,int tIdx){
       }
    }
    else if(t.state == TokenState::MAIN_PATH){
-      int abdPos = game.getAbsolutePostion(player.startPosition,t.stepsTaken);
+      int absPos = game.getAbsolutePostion(player.startPosition,t.stepsTaken);
       return mainPath[absPos];
    }
    else if(t.state == TokenState::HOME_PATH){
@@ -158,6 +158,7 @@ int main(){
          if(boardTexture.id != 0){
             Rectangle sourceRec = {0.0f,0.0f,(float)boardTexture.width,(float)boardTexture.height};
             Rectangle destRec = {0.0f,0.0f,(float)screenWidth,(float)screenHeight};
+            Vector2 origin = {0.0f,0.0f};
             DrawTexturePro(boardTexture,sourceRec,destRec,origin,0.0f,WHITE);
          }
          for(int pIdx = 0;pIdx < game.players.size();pIdx++){
