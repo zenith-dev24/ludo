@@ -15,6 +15,7 @@ class LudoGame{
         int currentRoll;
         bool needsToRoll;
         bool gameOver;
+        bool hasValidMoves();
 
         LudoGame(int numPlayers);
         void rollDice();

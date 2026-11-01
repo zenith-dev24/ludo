@@ -121,3 +121,18 @@ void LudoGame :: executeTurn(){
         }
     }
 }
+bool LudoGame :: hasValidMoves(){
+    Ludo::player& current = players[currentplayerIndex];
+    for(const auto& t : current.tokens){
+        if(t.state == TokenState::BASE && currentRoll == 6){
+            return true;
+        }
+        if(t.state == TokenState::MAIN_PATH){
+            return true;
+        }
+        if(t.state == TokenState::HOME_PATH && t.stepsTaken + currentRoll <= 57){
+            return true;
+        }
+    }
+    return false;
+}
