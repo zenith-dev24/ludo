@@ -105,7 +105,7 @@ Vector2 getTokenDrawPosition(LudoGame& game,int pIdx,int tIdx){
       }
    }
    else if(t.state == TokenState::MAIN_PATH){
-      int absPos = game.getAbsolutePostion(player.startPosition,t.stepsTaken);
+      int absPos = game.getAbsolutePosition(player.startPosition,t.stepsTaken);
       return mainPath[absPos];
    }
    else if(t.state == TokenState::HOME_PATH){
