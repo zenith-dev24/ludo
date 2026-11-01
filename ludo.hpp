@@ -24,6 +24,5 @@ class LudoGame{
         void handleCapture(int targetabspos,string movingcolor);
         bool isGameOver();
         bool tryMoveToken(int tokenId);
-        void executeTurn();
 };
 #endif

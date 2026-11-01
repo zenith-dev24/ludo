@@ -83,19 +83,26 @@ bool LudoGame :: tryMoveToken(int tokenId){
     }
     else if(t.state == TokenState::MAIN_PATH){
         if(t.stepsTaken + currentRoll > 50){
-            t.state = TokenState::HOME_PATH;
+            if(t.state == TokenState::MAIN_PATH){
+                t.state = TokenState::HOME_PATH;
+                t.stepsTaken += currentRoll;
+                if(t.stepsTaken == 56){
+                    t.state = TokenState::FINISHED;
+                }
+                moveSuccesful = true;
+            }
         }
-        t.stepsTaken += currentRoll;
-        if(t.state == TokenState::MAIN_PATH){
-            int abspos = getAbsolutePosition(current.startPosition,t.stepsTaken);
-            handleCapture(abspos,current.color);
+        else{
+            t.stepsTaken += currentRoll;
+            int absPos = getAbsolutePosition(current.startPosition,t.stepsTaken);
+            handleCapture(absPos,current.color);
+            moveSuccesful = true;
         }
-        moveSuccesful = true;
     }
     else if(t.state == TokenState::HOME_PATH){
-        if(t.stepsTaken + currentRoll <=57){
+        if(t.stepsTaken + currentRoll <=56){
             t.stepsTaken += currentRoll;
-            if(t.stepsTaken == 57){
+            if(t.stepsTaken == 56){
                 t.state = TokenState::FINISHED;
             }
             moveSuccesful = true;
@@ -113,13 +120,6 @@ bool LudoGame :: tryMoveToken(int tokenId){
         return true;
     }
     return false;
-}
-void LudoGame :: executeTurn(){
-    for(int i = 0;i < 4;i++){
-        if(tryMoveToken(i)){
-            break;
-        }
-    }
 }
 bool LudoGame :: hasValidMoves(){
     Ludo::player& current = players[currentplayerIndex];
