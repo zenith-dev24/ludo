@@ -125,7 +125,7 @@ Vector2 getTokenDrawPosition(LudoGame& game,int pIdx,int tIdx){
          }
       }
    }
-   return {400.0f,400.0f};
+   return {0.0f,0.0f};
 }
 int main(){
      const int screenWidth = 800;
@@ -188,4 +188,5 @@ int main(){
      UnloadTexture(boardTexture);
      CloseWindow();
      return 0;
+   }
 }
