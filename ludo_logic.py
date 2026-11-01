@@ -55,8 +55,28 @@ class LudoGame:
                         token.state = "BASE"
                         token.steps_taken = 0
 
-    def try_move_token(self,token):
-        
+    def try_move_token(self,token_id):
+        current = self.players[self.current_player_index]
+        t = current.tokens[token_id]
+        move_successful = False
+
+        if t.state == "BASE":
+            if self.current_roll == 6:
+                t.state = "MAIN_PATH"
+                t.steps_taken = 0
+                move_successful = True
+
+            elif t.state == "MAIN_PATH":
+                if t.steps_taken + self.current_roll > 50:
+                    if t.steps_taken + self.current_player_index + self.current_roll <= 56:
+                        t.state = "HOME_PATH"
+                        t.steps_taken += self.current_roll
+                        if t.steps_taken == 56:
+                            t.state = "FINISHED"
+                        move_successful = True
+                    else:
+                        
+
     def has_valid_moves(self):
         current = self.players[self.current_player_index]
         for t in current.tokens:
