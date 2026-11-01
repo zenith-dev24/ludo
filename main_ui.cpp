@@ -164,7 +164,7 @@ int main(){
          for(int pIdx = 0;pIdx < game.players.size();pIdx++){
             Color pColor = getRaylibColor(game.players[pIdx].color);
             for(int tIdx = 0;tIdx < 4;tIdx++){
-               Vector2 pos = getTokenScreenPos(game,pIdx,tIdx);
+               Vector2 pos = getTokenDrawPosition(game,pIdx,tIdx);
                if(pos.x != 0 && pos.y != 0){
                   DrawCircle(pos.x,pos.y,15,pColor);
                   DrawCircleLines(pos.x,pos.y,15,BLACK);
