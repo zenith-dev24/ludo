@@ -15,13 +15,13 @@ LudoGame :: LudoGame(int numPlayers){
     gameOver = false;
     if(numPlayers >= 2){
         players.push_back(Ludo::player("RED",0));
-        players.push_back(Ludo::player("YELLOW",26));
+        players.push_back(Ludo::player("BLUE",13));
     }
     if(numPlayers >= 3){
-        players.push_back(Ludo::player("GREEN",13));
+        players.push_back(Ludo::player("YELLOW",26));
     }
     if(numPlayers == 4){
-        players.push_back(Ludo::player("BLUE",39));
+        players.push_back(Ludo::player("GREEN",39));
     }
 }
 void LudoGame :: rollDice(){
