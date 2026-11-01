@@ -2,6 +2,8 @@
 #include <vector>
 #include <string>
 #include <random>
+#include <ctime>
+#include <cstdlib>
 #include "boardmath.hpp"
 #include "ludo.hpp"
 
@@ -9,6 +11,7 @@ using namespace std;
 using namespace Ludo;
 
 LudoGame :: LudoGame(int numPlayers){
+    srand(time(0));
     currentplayerIndex = 0;
     currentRoll = 0;
     needsToRoll = true;

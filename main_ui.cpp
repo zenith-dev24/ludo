@@ -146,6 +146,7 @@ int main(){
                }
                else if(!game.hasValidMoves()){
                   game.currentplayerIndex = (game.currentplayerIndex + 1) % game.players.size();
+                  game.needsToRoll = true;
                }
             }
             if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
