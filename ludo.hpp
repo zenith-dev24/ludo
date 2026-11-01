@@ -1,4 +1,4 @@
-#indef LUDO_HPP
+#ifndef LUDO_HPP
 #define LUDO_HPP
 
 #include <iostream>
@@ -13,15 +13,16 @@ class LudoGame{
         vector<Ludo::player> players;
         int currentplayerIndex;
         int currentRoll;
-        bool needstoRoll;
+        bool needsToRoll;
         bool gameOver;
 
         LudoGame(int numPlayers);
         void rollDice();
         int getAbsolutePosition(int startPosition,int stepsTaken);
-        bool isSafeSquae(int abspos);
+        bool isSafeSquare(int abspos);
         void handleCapture(int targetabspos,string movingcolor);
         bool isGameOver();
-        void playTurn();
+        bool tryMoveToken(int tokenId);
+        void executeTurn();
 };
 #endif
