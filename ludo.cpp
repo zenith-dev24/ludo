@@ -85,6 +85,32 @@ bool LudoGame :: tryMoveToken(int tokenId){
         if(t.stepsTaken + currentRoll > 50){
             t.state == TokenState::HOME_PATH;
         }
-        
+        t.stepsTaken += currentRoll;
+        if(t.state == TokenState::MAIN_PATH){
+            int abspos = getAbsolutePosition(current.startPosition,t.stepsTaken);
+            handleCapture(abspos,current.color);
+        }
+        moveSuccesful = true;
     }
+    else if(t.state == TokenState::HOME_PATH){
+        if(t.stepsTaken + currentRoll <=57){
+            t.stepsTaken += currentRoll;
+            if(t.stepsTaken == 57){
+                t.state = TokenState::FINISHED;
+            }
+            moveSuccesful = true;
+        }
+    }
+    if(moveSuccesful){
+        if(current.hasWon()){
+            gameOver = true;
+        }
+
+        if(currentRoll != 6){
+            currentplayerIndex = (currentplayerIndex + 1) % players.size();
+        }
+        needsToRoll = true;
+        return true;
+    }
+    return false;
 }
