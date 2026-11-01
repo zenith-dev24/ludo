@@ -86,9 +86,9 @@ Color getRaylibColor(string colorName){
       return BLACK;
    }
 }
-Vector2 getTokenDrawPosition(LudoGame& game,int playerIdx,int tokenIdx){
-   const Ludo::player& player = game.players[playerIdx];
-   const Ludo::Token& t = player.tokens[tokenIdx];
+Vector2 getTokenDrawPosition(LudoGame& game,int pIdx,int tIdx){
+   const Ludo::player& player = game.players[pIdx];
+   const Ludo::Token& t = player.tokens[tIdx];
 
    if(t.state == TokenState::BASE){
       if(player.color == "RED"){
@@ -154,57 +154,15 @@ int main(){
          if(boardTexture.id != 0){
             Rectangle sourceRec = {0.0f,0.0f,(float)boardTexture.width,(float)boardTexture.height};
             Rectangle destRec = {0.0f,0.0f,(float)screenWidth,(float)screenHeight};
-            Vector2 origin = {0.0f,0.0f};
             DrawTexturePro(boardTexture,sourceRec,destRec,origin,0.0f,WHITE);
          }
-         for(const auto& player : game.players){
-            Color pColor = getRaylibColor(player.color);
-
-            for(const auto& t : player.tokens){
-               float drawX = 0,drawY = 0;
-               if(t.state == TokenState::BASE){
-                  if(player.color == "RED"){
-                     drawX = redBase[t.id].x;drawY = redBase[t.id].y;
-                  }
-                  else if(player.color == "GREEN"){
-                     drawX = greenBase[t.id].x;drawY = greenBase[t.id].y;
-                  }
-                  else if(player.color == "YELLOW"){
-                     drawX = yellowBase[t.id].x;drawY = yellowBase[t.id].y;
-                  }
-                  else if(player.color == "BLUE"){
-                     drawX = blueBase[t.id].x;drawY = blueBase[t.id].y;
-                  }
-               }
-               else if(t.state == TokenState::MAIN_PATH){
-                  int absPos = game.getAbsolutePosition(player.startPosition,t.stepsTaken);
-                  drawX = mainPath[absPos].x;
-                  drawY = mainPath[absPos].y;
-               }
-               else if(t.state == TokenState::HOME_PATH){
-                  int homeIdx = t.stepsTaken - 52;
-                  if(homeIdx >= 0 && homeIdx < 5){
-                     if(player.color == "RED"){
-                     drawX = redHome[homeIdx].x;drawY = redHome[homeIdx].y;
-                     }
-                     else if(player.color == "GREEN"){
-                        drawX = greenHome[homeIdx].x;drawY = greenHome[homeIdx].y;
-                     }
-                     else if(player.color == "YELLOW"){
-                        drawX = yellowHome[homeIdx].x;drawY = yellowHome[homeIdx].y;
-                     }
-                     else if(player.color == "BLUE"){
-                        drawX = blueHome[homeIdx].x;drawY = blueHome[homeIdx].y;
-                     }
-                  }
-               }
-               else if(t.state == TokenState::FINISHED){
-                  drawX = 400;
-                  drawY = 400;
-               }
-               if(drawX != 0 && drawY != 0){
-                  DrawCircle(drawX,drawY,15,pColor);
-                  DrawCircleLines(drawX,drawY,15,BLACK);
+         for(int pIdx = 0;pIdx < game.players.size();pIdx++){
+            Color pColor = getRaylibColor(game.players[pIdx].color);
+            for(int tIdx = 0;tIdx < 4;tIdx++){
+               Vector2 pos = getTokenScreenPos(game,pIdx,tIdx);
+               if(pos.x != 0 && pos.y != 0){
+                  DrawCircle(pos.x,pos.y,15,pColor);
+                  DrawCircleLines(pos.x,pos.y,15,BLACK);
                }
             }
          }
