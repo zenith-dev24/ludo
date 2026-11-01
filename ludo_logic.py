@@ -75,7 +75,26 @@ class LudoGame:
                             t.state = "FINISHED"
                         move_successful = True
                     else:
-                        
+                        t.steps_taken += self.current_roll
+                        abs_pos = self.get_absolute_position(current.start_position,t.steps_taken)
+                        self.handle_capture(abs_pos,current.color)
+                        move_successful = True
+
+            elif t.state == "HOME_PATH":
+                if t.steps_taken + self.current_roll <=56:
+                    t.steps_taken += self.current_roll
+                    if t.steps_taken == 56:
+                        t.state = "FINISHED"
+                        move_successful = True
+
+            if move_successful:
+                if current.has_won():
+                    self.game_over = True
+                if self.current_roll != 6:
+                    self.current_player_index = (self.current_player_index + 1) % len(self.players)
+                self.needs_to_roll = True
+                return True
+            return False
 
     def has_valid_moves(self):
         current = self.players[self.current_player_index]
