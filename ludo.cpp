@@ -25,10 +25,7 @@ LudoGame :: LudoGame(int numPlayers){
     }
 }
 void LudoGame :: rollDice(){
-            static random_device rd;
-            static mt19937 gen(rd());
-            uniform_int_distribution<> dis(1,6);
-            currentRoll = dis(gen);
+            currentRoll = rand() % 6 + 1;
             needsToRoll = false;
         }
 int LudoGame :: getAbsolutePosition(int startPostion,int stepsTaken){
