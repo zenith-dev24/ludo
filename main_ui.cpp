@@ -141,14 +141,18 @@ int main(){
       while(!WindowShouldClose()){
          if(!game.gameOver){
             if(IsKeyPressed(KEY_SPACE)){
-               if(game.needsToRoll){
-                  game.rollDice();
-               }
-               else{
-                  game.executeTurn();
+               game.rollDice();
+            }
+            if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+               Vector2 mousePos = GetMousePosition();
+               for(int i = 0;i < 4;i++){
+                  Vector2 tokenPos = getTokenDrawPosition(game,game.currentplayerIndex,i);
+                  if(CheckCollisionPointCircle(mousePos,tokenPos,15)){
+                     game.tryMoveToken(i);
+                     break;
+                  }
                }
             }
-         }
          BeginDrawing();
          ClearBackground(RAYWHITE);
          if(boardTexture.id != 0){
@@ -168,12 +172,15 @@ int main(){
          }
          DrawRectangle(10,10,250,80,Fade(BLACK,0.7f));
          DrawText(TextFormat("Turn: %s",game.players[game.currentplayerIndex].color.c_str()),20,20,20,getRaylibColor(game.players[game.currentplayerIndex].color));
+         if(game.needsToRoll){
+            DrawText("Press SPACE to Roll",20,50,20,WHITE);
+         }
+         else{
+            DrawText(TextFormat("Rolled: %d(Click Piece)",game.currentRoll),20,50,20,WHITE);
+         }
          if(game.gameOver){
             DrawRectangle(0,350,800,100,Fade(BLACK,0.8f));
             DrawText("GAME OVER!",280,380,40,GREEN);
-         }
-         else if(game.needsToRoll){
-            DrawText("Press SPACE to Roll",280,380,20,BLACK);
          }
          EndDrawing();
      }
