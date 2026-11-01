@@ -169,9 +169,13 @@ int main(){
          }
          DrawRectangle(10,10,250,80,Fade(BLACK,0.7f));
          DrawText(TextFormat("Turn: %s",game.players[game.currentplayerIndex].color.c_str()),20,20,20,getRaylibColor(game.players[game.currentplayerIndex].color));
-         if(game.needsToRoll){
+         if(game.gameOver){
             DrawRectangle(0,350,800,100,Fade(BLACK,0.8f));
             DrawText("GAME OVER!",280,380,40,GREEN);
+         }
+         else if(game.needsToRoll){
+            DrawText("Press SPACE to Roll",280,380,20,BLACK);
+         }
          }
          EndDrawing();
      }
