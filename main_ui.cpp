@@ -153,6 +153,7 @@ int main(){
                   }
                }
             }
+         }
          BeginDrawing();
          ClearBackground(RAYWHITE);
          if(boardTexture.id != 0){
@@ -188,5 +189,4 @@ int main(){
      UnloadTexture(boardTexture);
      CloseWindow();
      return 0;
-   }
 }
