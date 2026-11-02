@@ -37,7 +37,7 @@ namespace Ludo{
         std::string name;
         std::vector<Ludo::Token>tokens;
         int startPosition;
-        player(std::string playerColor,int staartPos,std::string playerName = ""){
+        player(std::string playerColor,int startPos,std::string playerName = ""){
             color = playerColor;
             startPosition = startPos;
             for(int i = 0;i < 4;i++){
