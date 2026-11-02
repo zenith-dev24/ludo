@@ -114,7 +114,7 @@ void drawDie(Rectangle rect,int face,bool isRolling){
       {1,0,1,1,1,0,1},
       {1,1,1,1,1,1,1}
    };
-   int faceIdx = isRolling ? ((int)(GetTime() % 6)) : face - 1;
+   int faceIdx = isRolling ? ((int)((GetTime() * 20) % 6)) : face - 1;
    for(int i = 0;i < 7;i++){
       if(faces[faceIdx][i]){
          DrawCircleV(dots[i],rect.width / 20,BLACK);
@@ -136,34 +136,63 @@ int main(){
      int selectedColors[4] = {0,1,2,3};
      string playerNames[4] = {"Player 1","Player 2","Player 3","Player 4"};
      const char* colorNames[4] = {"RED","BLUE","YELLOW","GREEN"};
+     Color playerColors[4] = {RED,BLUE,YELLOW,GREEN};
      int startPositions[4] = {0,13,26,39};
-     bool setuocomplete = false;
+     bool setupComplete = false;
      bool isRolling = false;
      int rollResult = 0;
      LudoGame* game = nullptr;
 
       while(!WindowShouldClose()){
-         if(!game.gameOver){
-            if(IsKeyPressed(KEY_SPACE)){
-               if(game.needsToRoll){
-                  game.rollDice();
+         Vector2 mousePos = GetMousePosition();
+         if(!setupComplete){
+            if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+               if(CheckCollisionPointRec(mousePos,{(float)panelX+75,65,40,35})){
+                  playerCount = playerCount > 2 ? playerCount - 1 : 2;
                }
-               else if(!game.hasValidMoves()){
-                  game.currentplayerIndex = (game.currentplayerIndex + 1) % game.players.size();
-                  game.needsToRoll = true;
+               if(CheckCollisionPointRec(mousePos,{(float)panelX+140,65,40,35})){
+                  playerCount = playerCount > 2 ? playerCount - 1 : 4;
+               }
+               for(int i = 0;i < playerCount;i++){
+                  float rowY = 135 + i * 105;
+                  if(CheckCollisionPointRec(mousePos,{(float)panelX+20,rowY,220,35})){
+                     selectedName = i;
+                  }
+                  if(CheckCollisionPointRec(mousePos,{(float)panelX+250,rowY,40,35})){
+                     selectedColors[i] = (selectedColors[i] + 1) % 4;
+                  }
+               }
+               if(CheckCollisionPointRec(mousePos,{(float)panelX+20,650,260,55})){
+                  game = new LudoGame(playerCount);
+                  for(int i = 0;i < playerCount;i++){
+                     game->players[i].name = playerNames[i];
+                     game->players[i].color = colorNames[selectedColors[i]];
+                     game->players[i].startPosition = startPositions[selectedColors[i]];
+                  }
+                  setupComplete = true;
                }
             }
-            if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
-               Vector2 mousePos = GetMousePosition();
-               for(int i = 0;i < 4;i++){
-                  Vector2 tokenPos = getTokenDrawPosition(game,game.currentplayerIndex,i);
-                  if(CheckCollisionPointCircle(mousePos,tokenPos,15)){
-                     game.tryMoveToken(i);
-                     break;
+            if(selectedName >= 0){
+               int key = GetCharPressed();
+               while(key > 0){
+                  if(key >= 32 && key < 120 && playerNames[selectedName].size() < 15){
+                     playerNames[selectedName] += (char)key;
+                     key = GetCharPressed;
                   }
+               }
+               if(IsKeyPressed(KEY_BACKSPACE) && !playerNames[selectedName].empty()){
+                  playerNames[selectedName].pop_back;
+               }
+               if(IsKeyPressed(KEY_ENTER)){
+                  selectedName = -1;
                }
             }
          }
+         else if(!game->gameOver){
+            
+         }
+      }
+         
          BeginDrawing();
          ClearBackground(RAYWHITE);
          if(boardTexture.id != 0){
@@ -199,7 +228,8 @@ int main(){
          }
          EndDrawing();
      }
+     if(game) delete game;
      UnloadTexture(boardTexture);
      CloseWindow();
      return 0;
-}
+   }
