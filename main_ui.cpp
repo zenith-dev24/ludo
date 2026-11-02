@@ -122,7 +122,7 @@ void drawDie(Rectangle rect,int face,bool isRolling){
    }
 }
 int main(){
-     const int boardSize = 800
+     const int boardSize = 800;
      const int screenWidth = 1100;
      const int screenHeight = 800;
      const int panelX = 820;
@@ -131,7 +131,16 @@ int main(){
      SetTargetFPS(60);
      Texture2D boardTexture = LoadTexture("board.png");
 
-     LudoGame game(4);
+     int playerCount = 2;
+     int selectedName = -1;
+     int selectedColors[4] = {0,1,2,3};
+     string playerNames[4] = {"Player 1","Player 2","Player 3","Player 4"};
+     const char* colorNames[4] = {"RED","BLUE","YELLOW","GREEN"};
+     int startPositions[4] = {0,13,26,39};
+     bool setuocomplete = false;
+     bool isRolling = false;
+     int rollResult = 0;
+     LudoGame* game = nullptr;
 
       while(!WindowShouldClose()){
          if(!game.gameOver){
