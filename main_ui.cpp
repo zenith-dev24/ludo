@@ -89,36 +89,12 @@ Vector2 getTokenDrawPosition(LudoGame& game,int pIdx,int tIdx){
    }
    return {0.0f,0.0f};
 }
-void drawDie(Rectangle rect,int face,bool isRolling){
-   DrawRectangleRec(rect,0.20f,8,WHITE);
-   DrawRectangleLines(rect,0.20f,8,BLACK);
-   float cx = rect.x + rect.width / 2;
-   float cy = rect.y + rect.height / 2;
-   float d = rect.width / 5;
-   Vector2 dots[7] = {
-      {cx - d,cy - d},
-      {cx,cy - d},
-      {cx + d,cy - d},
-      {cx - d,cy},
-      {cx,cy},
-      {cx + d,cy},
-      {cx - d,cy + d},
-      {cx,cy + d},
-      {cx + d,cy + d}
-   };
-   bool faces[6][7] = {
-      {0,0,0,0,1,0,0},
-      {1,0,0,0,0,0,1},
-      {1,0,0,0,1,0,1},
-      {1,0,1,0,1,0,1},
-      {1,0,1,1,1,0,1},
-      {1,1,1,1,1,1,1}
-   };
-   int faceIdx = isRolling ? ((int)((GetTime() * 20) % 6)) : face - 1;
-   for(int i = 0;i < 7;i++){
-      if(faces[faceIdx][i]){
-         DrawCircleV(dots[i],rect.width / 20,BLACK);
-      }
+void drawDie(Rectangle rect,int face,bool isRolling,Texture2D diceFaces[6]){
+   int shownFace = isRolling ? ((int)(GetTime() * 18) % 6) : (face > 0 ? face - 1 : 0);
+   if(diceFaces[shownFace].id != 0){
+      Rectangle sourceRec = {0.0f,0.0f,(float)diceFaces[shownFace].width,(float)diceFaces[shownFace].height};
+      Vector2 origin = {0.0f,0.0f};
+      DrawTexturePro(diceFaces[shownFace],sourceRec,rect,origin,0.0f,WHITE);
    }
 }
 int main(){
@@ -130,6 +106,14 @@ int main(){
      InitWindow(screenWidth,screenHeight,"Ludo Game");
      SetTargetFPS(60);
      Texture2D boardTexture = LoadTexture("board.png");
+     Texture2D diceFaces[6] = {
+         LoadTexture("dice1.png");
+         LoadTexture("dice2.png");
+         LoadTexture("dice3.png");
+         LoadTexture("dice4.png");
+         LoadTexture("dice5.png");
+         LoadTexture("dice6.png");
+     };
 
      int playerCount = 2;
      int selectedName = -1;
@@ -140,7 +124,7 @@ int main(){
      int startPositions[4] = {0,13,26,39};
      bool setupComplete = false;
      bool isRolling = false;
-     int diceAnimationend = 0;
+     double diceAnimationend = 0;
      LudoGame* game = nullptr;
 
       while(!WindowShouldClose()){
@@ -177,7 +161,7 @@ int main(){
                while(key > 0){
                   if(key >= 32 && key < 120 && playerNames[selectedName].size() < 15){
                      playerNames[selectedName] += (char)key;
-                     key = GetCharPressed;
+                     key = GetCharPressed();
                   }
                }
                if(IsKeyPressed(KEY_BACKSPACE) && !playerNames[selectedName].empty()){
@@ -195,7 +179,7 @@ int main(){
             }
             bool clickedDie = IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && CheckCollisionPointRec(mousePos,{(float)panelX+20,380,100,100});
             bool pressedSpace = IsKeyPressed(KEY_SPACE);
-            if(!isRolling && (clckedDie || pressedSpace)){
+            if(!isRolling && (clickedDie || pressedSpace)){
                if(game->needsToRoll){
                   isRolling = true;
                   diceAnimationend = GetTime() + 0.8;
@@ -250,7 +234,7 @@ int main(){
                DrawText("GAME OVER!",280,380,40,GREEN);
             }
          }
-         DrawRectangle(panelX,0,screenWidth-panelX,screenHeight,(250,250,250,255));
+         DrawRectangle(panelX,0,screenWidth-panelX,screenHeight,(color){250,250,250,255});
          DrawText("LUDO",panelX+20,18,30,BLACK);
          if(!setupComplete){
             DrawText("Players",panelX+20,75,20,BLACK);
@@ -262,7 +246,7 @@ int main(){
             for(int i = 0;i < playerCount;i++){
                float rowY = 135 + i * 105;
                DrawRectangle(panelX+20,rowY,220,35,WHITE);
-               DrawRectangleLines(panelX+20,owY,220,35,selectedName == i ? BLUE : GRAY);
+               DrawRectangleLines(panelX+20,rowY,220,35,selectedName == i ? BLUE : GRAY);
                DrawText(playerNames[i].c_str(),panelX+30,rowY+10,18,BLACK);
                DrawRectangle(panelX+250,rowY,35,34,playerColors[selectedColors[i]]);
                DrawRectangleLines(panelX+250,rowY,35,34,BLACK);
@@ -280,7 +264,7 @@ int main(){
                DrawText(game->players[i].name.c_str(),panelX+48,175 + i * 32,18,BLACK);
             }
             DrawText("DICE",panelX+20,350,18,BLACK);
-            drawDie({(float)panelX+20,380,100,100},game->currentRoll,isRolling);
+            drawDie({(float)panelX+20,380,100,100},game->currentRoll,isRolling,diceFaces);
             if(game->gameOver){
                DrawText("Winner!",panelX+145,410,24,GREEN);
             }
@@ -290,7 +274,7 @@ int main(){
             else if(game->needsToRoll){
                DrawText("Click die or Press SPACE",panelX+20,510,18,BLACK);
             }
-            else if(!game->hasValidMoves){
+            else if(!game->hasValidMoves()){
                DrawText(TextFormat("%d: no moves",game->currentRoll),panelX+20,510,18,RED);
                DrawText("Click die or press SPACE to pass",panelX+20,535,15,DARKGRAY);
             }
@@ -302,7 +286,10 @@ int main(){
          EndDrawing();
      }
      if(game) delete game;
+     for(int i = 0;i < 6;i++){
+      unloadTexture(diceFaces[i]);
+     }
      UnloadTexture(boardTexture);
      CloseWindow();
      return 0;
-   }
+}
