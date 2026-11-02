@@ -165,7 +165,7 @@ int main(){
                   }
                }
                if(IsKeyPressed(KEY_BACKSPACE) && !playerNames[selectedName].empty()){
-                  playerNames[selectedName].pop_back;
+                  playerNames[selectedName].pop_back();
                }
                if(IsKeyPressed(KEY_ENTER)){
                   selectedName = -1;
@@ -208,8 +208,8 @@ int main(){
             Vector2 origin = {0.0f,0.0f};
             DrawTexturePro(boardTexture,sourceRec,destRec,origin,0.0f,WHITE);
          }
-         for(int pIdx = 0;pIdx < game.players.size();pIdx++){
-            Color pColor = getRaylibColor(game.players[pIdx].color);
+         for(int pIdx = 0;pIdx < game->players.size();pIdx++){
+            Color pColor = getRaylibColor(game->players[pIdx].color);
             for(int tIdx = 0;tIdx < 4;tIdx++){
                Vector2 pos = getTokenDrawPosition(game,pIdx,tIdx);
                DrawCircle(pos.x,pos.y,15,pColor);
@@ -219,17 +219,17 @@ int main(){
          if(setupComplete){
             DrawRectangle(10,10,250,80,Fade(BLACK,0.7f));
             const player& current = game->players[game->currentplayerIndex];
-            DrawText(TextFormat("Turn: %s",game.players[game.currentplayerIndex].color.c_str()),20,20,20,getRaylibColor(game.players[game.currentplayerIndex].color));
-            if(game.needsToRoll){
+            DrawText(TextFormat("Turn: %s",game->players[game->currentplayerIndex].color.c_str()),20,20,20,getRaylibColor(game->players[game.currentplayerIndex].color));
+            if(game->needsToRoll){
                DrawText("Press SPACE to Roll",20,50,20,WHITE);
             }
             else if(!game.hasValidMoves()){
-               DrawText(TextFormat("Rolled: %d(no moves! SPACE to skip)",game.currentRoll),20,50,20,RED);
+               DrawText(TextFormat("Rolled: %d(no moves! SPACE to skip)",game->currentRoll),20,50,20,RED);
             }
             else{
-               DrawText(TextFormat("Rolled: %d(Click Piece)",game.currentRoll),20,50,20,WHITE);
+               DrawText(TextFormat("Rolled: %d(Click Piece)",game->currentRoll),20,50,20,WHITE);
             }
-            if(game.gameOver){
+            if(game->gameOver){
                DrawRectangle(0,350,800,100,Fade(BLACK,0.8f));
                DrawText("GAME OVER!",280,380,40,GREEN);
             }
@@ -287,7 +287,7 @@ int main(){
      }
      if(game) delete game;
      for(int i = 0;i < 6;i++){
-      unloadTexture(diceFaces[i]);
+      UnloadTexture(diceFaces[i]);
      }
      UnloadTexture(boardTexture);
      CloseWindow();
