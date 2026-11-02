@@ -89,13 +89,46 @@ Vector2 getTokenDrawPosition(LudoGame& game,int pIdx,int tIdx){
    }
    return {0.0f,0.0f};
 }
+void drawDie(Rectangle rect,int face,bool isRolling){
+   DrawRectangleRec(rect,0.20f,8,WHITE);
+   DrawRectangleLines(rect,0.20f,8,BLACK);
+   float cx = rect.x + rect.width / 2;
+   float cy = rect.y + rect.height / 2;
+   float d = rect.width / 5;
+   Vector2 dots[7] = {
+      {cx - d,cy - d},
+      {cx,cy - d},
+      {cx + d,cy - d},
+      {cx - d,cy},
+      {cx,cy},
+      {cx + d,cy},
+      {cx - d,cy + d},
+      {cx,cy + d},
+      {cx + d,cy + d}
+   };
+   bool faces[6][7] = {
+      {0,0,0,0,1,0,0},
+      {1,0,0,0,0,0,1},
+      {1,0,0,0,1,0,1},
+      {1,0,1,0,1,0,1},
+      {1,0,1,1,1,0,1},
+      {1,1,1,1,1,1,1}
+   };
+   int faceIdx = isRolling ? ((int)(GetTime() % 6)) : face - 1;
+   for(int i = 0;i < 7;i++){
+      if(faces[faceIdx][i]){
+         DrawCircleV(dots[i],rect.width / 20,BLACK);
+      }
+   }
+}
 int main(){
-     const int screenWidth = 800;
+     const int boardSize = 800
+     const int screenWidth = 1100;
      const int screenHeight = 800;
+     const int panelX = 820;
 
      InitWindow(screenWidth,screenHeight,"Ludo Game");
      SetTargetFPS(60);
-
      Texture2D boardTexture = LoadTexture("board.png");
 
      LudoGame game(4);
