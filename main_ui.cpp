@@ -107,12 +107,12 @@ int main(){
      SetTargetFPS(60);
      Texture2D boardTexture = LoadTexture("board.png");
      Texture2D diceFaces[6] = {
-         LoadTexture("dice1.png");
-         LoadTexture("dice2.png");
-         LoadTexture("dice3.png");
-         LoadTexture("dice4.png");
-         LoadTexture("dice5.png");
-         LoadTexture("dice6.png");
+         LoadTexture("dice1.png"),
+         LoadTexture("dice2.png"),
+         LoadTexture("dice3.png"),
+         LoadTexture("dice4.png"),
+         LoadTexture("dice5.png"),
+         LoadTexture("dice6.png"),
      };
 
      int playerCount = 2;
