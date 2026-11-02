@@ -228,27 +228,30 @@ int main(){
             Color pColor = getRaylibColor(game.players[pIdx].color);
             for(int tIdx = 0;tIdx < 4;tIdx++){
                Vector2 pos = getTokenDrawPosition(game,pIdx,tIdx);
-               if(pos.x != 0 && pos.y != 0){
-                  DrawCircle(pos.x,pos.y,15,pColor);
-                  DrawCircleLines(pos.x,pos.y,15,BLACK);
-               }
+               DrawCircle(pos.x,pos.y,15,pColor);
+               DrawCircleLines(pos.x,pos.y,15,BLACK);
             }
          }
-         DrawRectangle(10,10,250,80,Fade(BLACK,0.7f));
-         DrawText(TextFormat("Turn: %s",game.players[game.currentplayerIndex].color.c_str()),20,20,20,getRaylibColor(game.players[game.currentplayerIndex].color));
-         if(game.needsToRoll){
-            DrawText("Press SPACE to Roll",20,50,20,WHITE);
+         if(setupComplete){
+            DrawRectangle(10,10,250,80,Fade(BLACK,0.7f));
+            const player& current = game->players[game->currentplayerIndex];
+            DrawText(TextFormat("Turn: %s",game.players[game.currentplayerIndex].color.c_str()),20,20,20,getRaylibColor(game.players[game.currentplayerIndex].color));
+            if(game.needsToRoll){
+               DrawText("Press SPACE to Roll",20,50,20,WHITE);
+            }
+            else if(!game.hasValidMoves()){
+               DrawText(TextFormat("Rolled: %d(no moves! SPACE to skip)",game.currentRoll),20,50,20,RED);
+            }
+            else{
+               DrawText(TextFormat("Rolled: %d(Click Piece)",game.currentRoll),20,50,20,WHITE);
+            }
+            if(game.gameOver){
+               DrawRectangle(0,350,800,100,Fade(BLACK,0.8f));
+               DrawText("GAME OVER!",280,380,40,GREEN);
+            }
          }
-         else if(!game.hasValidMoves()){
-            DrawText(TextFormat("Rolled: %d(no moves! SPACE to skip)",game.currentRoll),20,50,20,RED);
-         }
-         else{
-            DrawText(TextFormat("Rolled: %d(Click Piece)",game.currentRoll),20,50,20,WHITE);
-         }
-         if(game.gameOver){
-            DrawRectangle(0,350,800,100,Fade(BLACK,0.8f));
-            DrawText("GAME OVER!",280,380,40,GREEN);
-         }
+         
+         
          EndDrawing();
      }
      if(game) delete game;
