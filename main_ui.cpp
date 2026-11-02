@@ -250,7 +250,54 @@ int main(){
                DrawText("GAME OVER!",280,380,40,GREEN);
             }
          }
-         
+         DrawRectangle(panelX,0,screenWidth-panelX,screenHeight,(250,250,250,255));
+         DrawText("LUDO",panelX+20,18,30,BLACK);
+         if(!setupComplete){
+            DrawText("Players",panelX+20,75,20,BLACK);
+            DrawRectangle(panelX+75,65,40,35,LIGHTGRAY);
+            DrawText("-",panelX+90,67,25,BLACK);
+            DrawRectangle(panelX+140,65,40,35,LIGHTGRAY);
+            DrawText("+",panelX+150,67,25,BLACK);
+            DrawText("Click name to edit;click color to cycle",panelX+20,110,15,DARKGREY);
+            for(int i = 0;i < playerCount;i++){
+               float rowY = 135 + i * 105;
+               DrawRectangle(panelX+20,rowY,220,35,WHITE);
+               DrawRectangleLines(panelX+20,owY,220,35,selectedName == i ? BLUE : GRAY);
+               DrawText(playerNames[i].c_str(),panelX+30,rowY+10,18,BLACK);
+               DrawRectangle(panelX+250,rowY,35,34,playerColors[selectedColors[i]]);
+               DrawRectangleLines(panelX+250,rowY,35,34,BLACK);
+               DrawText(colorNames[selectedColors[i]],panelX+20,rowY,15,BLACK);
+            }
+            DrawRectangle(panelX+20,650,260,55,(80,170,90,255));
+            DrawText("START GAME",panelX+72,667,22,WHITE);
+         }
+         else{
+            const players& current = game->players[game->currentplayerIndex];
+            DrawText(current.color.c_str(),panelX+20,75,18,getRaylibColor(current.color));
+            DrawText("Players",panelX+20,150,19,BLACK);
+            for(int i =0;i < game->players.size();i++){
+               DrawCircle(panelX+30,185 + i * 32,8,getRaylibColor(game->players[i].color));
+               DrawText(game->players[i].name.c_str(),panelX+48,175 + i * 32,18,BLACK);
+            }
+            DrawText("DICE",panelX+20,350,18,BLACK);
+            drawDie({(float)panelX+20,380,100,100},game->currentRoll,isRolling);
+            if(game->gameOver){
+               DrawText("Winner!",panelX+145,410,24,GREEN);
+            }
+            else if(isRolling){
+               DrawText("Rolling...",panelX+20,510,18,BLACK);
+            }
+            else if(game->needsToRoll){
+               DrawText("Click die or Press SPACE",panelX+20,510,18,BLACK);
+            }
+            else if(!game->hasValidMoves){
+               DrawText(TextFormat("%d: no moves",game->currentRoll),panelX+20,510,18,RED);
+               DrawText("Click die or press SPACE to pass",panelX+20,535,15,DARKGRAY);
+            }
+            else{
+               DrawText("Click a token",panelX+20,510,18,BLACK);
+            }
+         }
          
          EndDrawing();
      }
