@@ -45,7 +45,7 @@ namespace Ludo{
             }
         }
         bool hasWon() const{
-            for(const auto& token : tokens){
+            for(const auto& t : tokens){
                 if(t.state != TokenState::FINISHED){
                     return false;
                 }
