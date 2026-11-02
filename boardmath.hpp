@@ -30,23 +30,23 @@ namespace Ludo{
             return ss.str();
         }
     };
-    
+
     class player{
         public:
         std::string color;
-        std::vector<Ludo::Token> tokens;
+        std::string name;
+        std::vector<Ludo::Token>tokens;
         int startPosition;
-        player(std::string playerColor, int startPos){
+        player(std::string playerColor,int staartPos,std::string playerName = ""){
             color = playerColor;
             startPosition = startPos;
             for(int i = 0;i < 4;i++){
                 tokens.push_back(Ludo::Token(i));
             }
         }
-
         bool hasWon() const{
-            for(const auto& t : tokens){
-                if(t.state != Ludo::TokenState::FINISHED){
+            for(const auto& token : tokens){
+                if(t.state != TokenState::FINISHED){
                     return false;
                 }
             }

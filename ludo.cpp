@@ -83,6 +83,9 @@ bool LudoGame :: tryMoveToken(int tokenId){
     }
     else if(t.state == TokenState::MAIN_PATH){
         if(t.stepsTaken + currentRoll > 50){
+            if(t.stepsTaken + currentRoll > Finish_Step){
+                return false;
+            }
             if(t.state == TokenState::MAIN_PATH){
                 t.state = TokenState::HOME_PATH;
                 t.stepsTaken += currentRoll;
