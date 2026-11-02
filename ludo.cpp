@@ -1,0 +1,138 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <random>
+#include <ctime>
+#include <cstdlib>
+#include "boardmath.hpp"
+#include "ludo.hpp"
+
+using namespace std;
+using namespace Ludo;
+
+LudoGame :: LudoGame(int numPlayers){
+    srand(time(0));
+    currentplayerIndex = 0;
+    currentRoll = 0;
+    needsToRoll = true;
+    gameOver = false;
+    if(numPlayers >= 2){
+        players.push_back(Ludo::player("RED",0));
+        players.push_back(Ludo::player("BLUE",13));
+    }
+    if(numPlayers >= 3){
+        players.push_back(Ludo::player("YELLOW",26));
+    }
+    if(numPlayers == 4){
+        players.push_back(Ludo::player("GREEN",39));
+    }
+}
+void LudoGame :: rollDice(){
+            currentRoll = rand() % 6 + 1;
+            needsToRoll = false;
+        }
+int LudoGame :: getAbsolutePosition(int startPostion,int stepsTaken){
+            return (startPostion + stepsTaken) % 52;
+        }
+bool LudoGame :: isSafeSquare(int abspos){
+    for(int safe : Safe_Tiles){
+        if(abspos == safe){
+            return true;
+        }
+    }
+    return false;
+}
+void LudoGame :: handleCapture(int targetabspos,string movingcolor){
+            if(isSafeSquare(targetabspos)){
+                return;
+            }
+            for(auto& player : players){
+                if(player.color == movingcolor){
+                    continue;
+                }
+                for(auto& token : player.tokens){
+                    if(token.state == TokenState::MAIN_PATH){
+                        int tokenabspos = getAbsolutePosition(player.startPosition,token.stepsTaken);
+                        if(tokenabspos == targetabspos){
+                            token.state = TokenState::BASE;
+                            token.stepsTaken = 0;
+                        }
+                    }
+                }
+            }
+        }
+bool LudoGame :: isGameOver(){
+    for(const auto& p : players){
+        if(p.hasWon()){
+            gameOver = true;
+            return true;
+        }
+    }
+    return false;
+}
+bool LudoGame :: tryMoveToken(int tokenId){
+    Ludo::player& current = players[currentplayerIndex];
+    Ludo::Token& t = current.tokens[tokenId];
+    bool moveSuccesful = false;
+    if(t.state == TokenState :: BASE){
+        if(currentRoll == 6){
+            t.state = TokenState::MAIN_PATH;
+            t.stepsTaken = 0;
+            moveSuccesful = true;
+        }
+    }
+    else if(t.state == TokenState::MAIN_PATH){
+        if(t.stepsTaken + currentRoll > 50){
+            if(t.state == TokenState::MAIN_PATH){
+                t.state = TokenState::HOME_PATH;
+                t.stepsTaken += currentRoll;
+                if(t.stepsTaken == 56){
+                    t.state = TokenState::FINISHED;
+                }
+                moveSuccesful = true;
+            }
+        }
+        else{
+            t.stepsTaken += currentRoll;
+            int absPos = getAbsolutePosition(current.startPosition,t.stepsTaken);
+            handleCapture(absPos,current.color);
+            moveSuccesful = true;
+        }
+    }
+    else if(t.state == TokenState::HOME_PATH){
+        if(t.stepsTaken + currentRoll <=56){
+            t.stepsTaken += currentRoll;
+            if(t.stepsTaken == 56){
+                t.state = TokenState::FINISHED;
+            }
+            moveSuccesful = true;
+        }
+    }
+    if(moveSuccesful){
+        if(current.hasWon()){
+            gameOver = true;
+        }
+
+        if(currentRoll != 6){
+            currentplayerIndex = (currentplayerIndex + 1) % players.size();
+        }
+        needsToRoll = true;
+        return true;
+    }
+    return false;
+}
+bool LudoGame :: hasValidMoves(){
+    Ludo::player& current = players[currentplayerIndex];
+    for(const auto& t : current.tokens){
+        if(t.state == TokenState::BASE && currentRoll == 6){
+            return true;
+        }
+        if(t.state == TokenState::MAIN_PATH){
+            return true;
+        }
+        if(t.state == TokenState::HOME_PATH && t.stepsTaken + currentRoll <= 57){
+            return true;
+        }
+    }
+    return false;
+}
