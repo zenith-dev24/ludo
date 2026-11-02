@@ -211,7 +211,7 @@ int main(){
          for(int pIdx = 0;pIdx < game->players.size();pIdx++){
             Color pColor = getRaylibColor(game->players[pIdx].color);
             for(int tIdx = 0;tIdx < 4;tIdx++){
-               Vector2 pos = getTokenDrawPosition(game,pIdx,tIdx);
+               Vector2 pos = getTokenDrawPosition(*game,pIdx,tIdx);
                DrawCircle(pos.x,pos.y,15,pColor);
                DrawCircleLines(pos.x,pos.y,15,BLACK);
             }
@@ -219,11 +219,11 @@ int main(){
          if(setupComplete){
             DrawRectangle(10,10,250,80,Fade(BLACK,0.7f));
             const player& current = game->players[game->currentplayerIndex];
-            DrawText(TextFormat("Turn: %s",game->players[game->currentplayerIndex].color.c_str()),20,20,20,getRaylibColor(game->players[game.currentplayerIndex].color));
+            DrawText(TextFormat("Turn: %s",game->players[game->currentplayerIndex].color.c_str()),20,20,20,getRaylibColor(game->players[game->currentplayerIndex].color));
             if(game->needsToRoll){
                DrawText("Press SPACE to Roll",20,50,20,WHITE);
             }
-            else if(!game.hasValidMoves()){
+            else if(!game->hasValidMoves()){
                DrawText(TextFormat("Rolled: %d(no moves! SPACE to skip)",game->currentRoll),20,50,20,RED);
             }
             else{
@@ -234,7 +234,7 @@ int main(){
                DrawText("GAME OVER!",280,380,40,GREEN);
             }
          }
-         DrawRectangle(panelX,0,screenWidth-panelX,screenHeight,(color){250,250,250,255});
+         DrawRectangle(panelX,0,screenWidth-panelX,screenHeight,Color{250,250,250,255});
          DrawText("LUDO",panelX+20,18,30,BLACK);
          if(!setupComplete){
             DrawText("Players",panelX+20,75,20,BLACK);
@@ -242,7 +242,7 @@ int main(){
             DrawText("-",panelX+90,67,25,BLACK);
             DrawRectangle(panelX+140,65,40,35,LIGHTGRAY);
             DrawText("+",panelX+150,67,25,BLACK);
-            DrawText("Click name to edit;click color to cycle",panelX+20,110,15,DARKGREY);
+            DrawText("Click name to edit;click color to cycle",panelX+20,110,15,DARKGRAY);
             for(int i = 0;i < playerCount;i++){
                float rowY = 135 + i * 105;
                DrawRectangle(panelX+20,rowY,220,35,WHITE);
@@ -252,11 +252,11 @@ int main(){
                DrawRectangleLines(panelX+250,rowY,35,34,BLACK);
                DrawText(colorNames[selectedColors[i]],panelX+20,rowY,15,BLACK);
             }
-            DrawRectangle(panelX+20,650,260,55,(80,170,90,255));
+            DrawRectangle(panelX+20,650,260,55,{80,170,90,255});
             DrawText("START GAME",panelX+72,667,22,WHITE);
          }
          else{
-            const players& current = game->players[game->currentplayerIndex];
+            const player& current = game->players[game->currentplayerIndex];
             DrawText(current.color.c_str(),panelX+20,75,18,getRaylibColor(current.color));
             DrawText("Players",panelX+20,150,19,BLACK);
             for(int i =0;i < game->players.size();i++){
