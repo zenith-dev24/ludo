@@ -208,15 +208,15 @@ int main(){
             Vector2 origin = {0.0f,0.0f};
             DrawTexturePro(boardTexture,sourceRec,destRec,origin,0.0f,WHITE);
          }
-         for(int pIdx = 0;pIdx < game->players.size();pIdx++){
-            Color pColor = getRaylibColor(game->players[pIdx].color);
-            for(int tIdx = 0;tIdx < 4;tIdx++){
-               Vector2 pos = getTokenDrawPosition(*game,pIdx,tIdx);
-               DrawCircle(pos.x,pos.y,15,pColor);
-               DrawCircleLines(pos.x,pos.y,15,BLACK);
-            }
-         }
          if(setupComplete){
+               for(int pIdx = 0;pIdx < game->players.size();pIdx++){
+               Color pColor = getRaylibColor(game->players[pIdx].color);
+               for(int tIdx = 0;tIdx < 4;tIdx++){
+                  Vector2 pos = getTokenDrawPosition(*game,pIdx,tIdx);
+                 DrawCircle(pos.x,pos.y,15,pColor);
+                  DrawCircleLines(pos.x,pos.y,15,BLACK);
+               }
+            }
             DrawRectangle(10,10,250,80,Fade(BLACK,0.7f));
             const player& current = game->players[game->currentplayerIndex];
             DrawText(TextFormat("Turn: %s",game->players[game->currentplayerIndex].color.c_str()),20,20,20,getRaylibColor(game->players[game->currentplayerIndex].color));
