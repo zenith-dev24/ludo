@@ -140,7 +140,7 @@ int main(){
      int startPositions[4] = {0,13,26,39};
      bool setupComplete = false;
      bool isRolling = false;
-     int rollResult = 0;
+     int diceAnimationend = 0;
      LudoGame* game = nullptr;
 
       while(!WindowShouldClose()){
@@ -189,9 +189,32 @@ int main(){
             }
          }
          else if(!game->gameOver){
-            
+            if(isRolling && GetTime() >= diceAnimationend){
+               isRolling = false;
+               game->rollDice();
+            }
+            bool clickedDie = IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && CheckCollisionPointRec(mousePos,{(float)panelX+20,380,100,100});
+            bool pressedSpace = IsKeyPressed(KEY_SPACE);
+            if(!isRolling && (clckedDie || pressedSpace)){
+               if(game->needsToRoll){
+                  isRolling = true;
+                  diceAnimationend = GetTime() + 0.8;
+               }
+               else if(!game->hasValidMoves() && (clickedDie || pressedSpace)){
+                  game->currentplayerIndex = (game->currentplayerIndex + 1) % game->players.size();
+                  game->needsToRoll = true;
+               }
+            }
+            if(!isRolling && !game->needsToRoll && game->hasValidMoves() && IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && mousePos.x < boardSize){
+               for(int i = 0;i < 4;i++){
+                  Vector2 tokenPos = getTokenDrawPosition(*game,game->currentplayerIndex,i);
+                  if(CheckCollisionPointCircle(mousePos,tokenPos,18)){
+                     game->tryMoveToken(i);
+                     break;
+                  }
+               }
+            }
          }
-      }
          
          BeginDrawing();
          ClearBackground(RAYWHITE);
