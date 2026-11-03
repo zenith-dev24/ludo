@@ -1,6 +1,9 @@
 #include <raylib.h>
 #include <iostream>
 #include "ludo.hpp"
+#if defined(PLATFORM_WEB)
+#include <emscripten.h>
+#endif
 
 using namespace std;
 using namespace Ludo;
@@ -104,7 +107,7 @@ int main(){
      const int screenHeight = 800;
      const int panelX = 820;
 
-     InitWindow(screenWidth,screenHeight,"Ludo Game");
+     InitWindow(screenWidth, screenHeight, "Ludo Game");
      SetTargetFPS(60);
      Texture2D boardTexture = LoadTexture("board.png");
       Texture2D diceFaces[6] = {
@@ -199,7 +202,7 @@ int main(){
                }
             }
          }
-
+   
          BeginDrawing();
          ClearBackground(RAYWHITE);
          if(boardTexture.id != 0){
@@ -282,6 +285,9 @@ int main(){
             else DrawText("Click a token",panelX+20,510,18,BLACK);
          }
          EndDrawing();
+         #if defined(PLATFORM_WEB)
+         emscripten_sleep(0); 
+         #endif
       }
      if(game) delete game;
      for(int i = 0; i < 6; i++) UnloadTexture(diceFaces[i]);
