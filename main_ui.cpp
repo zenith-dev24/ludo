@@ -1,7 +1,7 @@
 #include <raylib.h>
 #include <iostream>
 #include "ludo.hpp"
-#if defined(PLATFORM_WEB)
+#ifdef __EMSCRIPTEN__
 #include <emscripten.h>
 #endif
 
@@ -285,7 +285,7 @@ int main(){
             else DrawText("Click a token",panelX+20,510,18,BLACK);
          }
          EndDrawing();
-         #if defined(PLATFORM_WEB)
+         #ifdef __EMSCRIPTEN__
          emscripten_sleep(0); 
          #endif
       }
