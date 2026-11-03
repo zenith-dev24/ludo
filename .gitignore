@@ -1,0 +1,6 @@
+*.o
+emsdk/
+*.wasm
+index.js
+index.html
+index.data
